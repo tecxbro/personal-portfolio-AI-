@@ -11,7 +11,7 @@ import Contact from './pages/Contact'
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0f172a] theme-transition">
+    <div className="min-h-screen bg-white dark:bg-[#0f172a] theme-transition pb-16 pt-16 md:pt-0 md:pb-0">
       <CustomCursor />
       <Navigation />
       <Routes>
