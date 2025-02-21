@@ -33,7 +33,7 @@ export default function CustomCursor() {
       className="fixed pointer-events-none z-[100] select-none"
       style={{
         transform: `translate(${position.x}px, ${position.y}px) translate(-50%, -50%)`,
-        fontSize: '24px'
+        fontSize: '24px',
       }}
     >
       💀

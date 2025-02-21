@@ -1,15 +1,149 @@
-import React, { useState } from 'react'
-import { HiX } from 'react-icons/hi'
+import React, { useState, useEffect } from 'react';
+import { HiX, HiSparkles, HiArrowUp } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 export default function ChatBot() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    { text: 'Hey there! Ask me something.', sender: 'bot' },
+  ]);
+  const [input, setInput] = useState('');
+  const [projectChoice, setProjectChoice] = useState(null);
+  const [randomImage, setRandomImage] = useState(null);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const navigate = useNavigate();
+  const { toggleTheme } = useTheme();
+
+  useEffect(() => {
+    if (randomImage) {
+      const imageMessage = {
+        text: <img src={randomImage} alt="Random" className="max-w-[200px] max-h-[200px]" />,
+        sender: 'bot',
+      };
+      setMessages((prevMessages) => [...prevMessages, imageMessage]);
+      setRandomImage(null); // Reset randomImage after displaying
+    }
+  }, [randomImage]);
+
+  const handleSendMessage = async () => {
+    if (input.trim() !== '') {
+      const newMessage = { text: input, sender: 'user' };
+      setMessages([...messages, newMessage]);
+
+      let botResponse = '';
+
+      if (input.toLowerCase().includes('light mode') || input.toLowerCase().includes('dark mode')) {
+        toggleTheme();
+        botResponse = `Theme toggled!`;
+      }
+      else if (
+        input.toLowerCase().includes('who is darshan') ||
+        input.toLowerCase().includes('who made this site')
+      ) {
+        botResponse =
+          "Hello, I'm Darshan Golchha, a passionate computer engineering student. I'm interested in leveraging technology to solve real-world problems.";
+      } else if (
+        input.toLowerCase().includes('what projects') ||
+        input.toLowerCase().includes('what work has he done')
+      ) {
+        botResponse =
+          'I have done projects Droza, Plan.it, VOLUN, would you like to know about a specific project?';
+      } else if (input.toLowerCase().includes('droza')) {
+        botResponse = 'Directed a team to design and deploy autonomous drones.';
+      } else if (input.toLowerCase().includes('planit') || input.toLowerCase().includes('plan.it')) {
+        botResponse = 'Designed and executed Instagram marketing campaigns.';
+      } else if (input.toLowerCase().includes('volun')) {
+        botResponse = 'Established and managed a volunteer team for STEM education.';
+      } else if (input.toLowerCase().includes('contact details')) {
+        botResponse = 'Contact me on golchhad@uci.edu';
+      } else if (input.toLowerCase().includes('instagram')) {
+        botResponse = '@tecxbro';
+      } else if (
+        input.toLowerCase().includes('educational background') ||
+        input.toLowerCase().includes('where did you study')
+      ) {
+        botResponse =
+          'I am currently studying Computer Engineering at the University of California, Irvine (2024-2028). I also hold an International Baccalaureate Diploma from Neerja Modi School.';
+      } else if (
+        input.toLowerCase().includes('technical skills') ||
+        input.toLowerCase().includes('technologies do you know')
+      ) {
+        botResponse =
+          'I am proficient in Python, SQL, HTML, CSS, JavaScript, React, MS Excel (Advanced), and Tableau.';
+      } else if (input.toLowerCase().includes('marketing tools')) {
+        botResponse = 'I have experience with Google Analytics, Canva, and Meta Ads Manager.';
+      } else if (input.toLowerCase().includes('logistics skills')) {
+        botResponse = 'I have skills in operations planning, supply chain optimization, and scheduling algorithms.';
+      } else if (input.toLowerCase().includes('certifications')) {
+        botResponse =
+          'I have certifications in Python for Everybody (University of Michigan), Introduction to Computer Science (Harvard University), and Supply Chain Management Basics (Coursera).';
+      } else if (input.toLowerCase().includes('achievements')) {
+        botResponse =
+          'I secured a state government grant for Droza, spearheaded fundraising campaigns, and was awarded Best Prototype at Plaksha University.';
+      } else if (input.toLowerCase().includes('leadership experience')) {
+        botResponse =
+          'I served as Vice President of the Astronomy Club and President of Information Technology for Neerja Modi School Model United Nations.';
+      } else if (input.toLowerCase().includes('passionate about')) {
+        botResponse = 'I am passionate about leveraging technology to solve real-world problems and making a positive impact on the world.';
+      } else if (input.toLowerCase().includes('interests')) {
+        botResponse = 'I am interested in software development, artificial intelligence, and entrepreneurship.';
+      } else if (input.toLowerCase().includes('hobbies')) {
+        botResponse = 'I enjoy stargazing, coding, and exploring new technologies.';
+      } else if (
+        input.toLowerCase().includes('give me a random image') ||
+        input.toLowerCase().includes('generate me a random image')
+      ) {
+        setLoadingImage(true);
+        try {
+          const response = await fetch('https://picsum.photos/200/200');
+          if (response.ok) {
+            setRandomImage(response.url);
+          } else {
+            botResponse = 'Failed to fetch a random image.';
+          }
+        } catch (error) {
+          console.error('Error fetching image:', error);
+          botResponse = 'Error fetching a random image.';
+        } finally {
+          setLoadingImage(false);
+        }
+      } else if (input.toLowerCase().includes('take me to work')) {
+        navigate('/work');
+        botResponse = 'Taking you to the Work section.';
+      } else if (input.toLowerCase().includes('take me to adventures')) {
+        navigate('/adventures');
+        botResponse = 'Taking you to the Contact section.';
+      } else if (input.toLowerCase().includes('take me to contact')) {
+        navigate('/contact');
+        botResponse = 'Taking you to the API Demo section.';
+      } else if (input.toLowerCase().includes('take me to api')) {
+        navigate('/api');
+        botResponse = 'Taking you to the API Demo section.';
+      } else if (input.toLowerCase().includes('take me home')) {
+          navigate('/');
+          botResponse = 'Taking you Home.';
+      }
+      else {
+        botResponse = 'Go check this on ChatGPT.';
+      }
+
+      if (botResponse) {
+        setTimeout(() => {
+          setMessages([...messages, newMessage, { text: botResponse, sender: 'bot' }]);
+        }, 500);
+      }
+
+      setInput('');
+    }
+  };
 
   return (
     <div className="fixed bottom-20 md:bottom-6 right-6 z-50">
       {isOpen ? (
-        <div className="w-[300px] bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="w-[300px] bg-rgba(255, 255, 255, 0.8) dark:bg-rgba(0, 0, 0, 0.8) backdrop-blur-lg rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-end p-4 border-b border-gray-200 dark:border-gray-700">
-            <button 
+            <button
               onClick={() => setIsOpen(false)}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors"
             >
@@ -17,18 +151,37 @@ export default function ChatBot() {
             </button>
           </div>
           <div className="p-4 space-y-4">
-            <div className="bg-[#818cf8]/10 rounded-2xl p-4 text-dark dark:text-white">
-              Hey there! How can I help you today?
+            <div className="space-y-2 max-h-[200px] overflow-y-auto">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`rounded-2xl p-3 text-dark dark:text-white ${
+                    message.sender === 'bot' ? 'bg-rgba(129, 140, 248, 0.1)' : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                >
+                  {typeof message.text === 'string' ? (
+                    message.text
+                  ) : (
+                    message.text // Render the image element
+                  )}
+                </div>
+              ))}
+              {loadingImage && <div className="text-center">Loading image...</div>}
             </div>
-            <div className="space-y-2">
-              <button className="w-full px-4 py-2 text-left rounded-lg border border-[#818cf8]/20 text-dark dark:text-white hover:bg-[#818cf8]/10 transition-colors">
-                Tell me about your work
-              </button>
-              <button className="w-full px-4 py-2 text-left rounded-lg border border-[#818cf8]/20 text-dark dark:text-white hover:bg-[#818cf8]/10 transition-colors">
-                View projects
-              </button>
-              <button className="w-full px-4 py-2 text-left rounded-lg border border-[#818cf8]/20 text-dark dark:text-white hover:bg-[#818cf8]/10 transition-colors">
-                Contact info
+            <div className="flex">
+              <input
+                type="text"
+                className="flex-grow rounded-l-lg border border-gray-300 dark:border-gray-700 p-2 text-dark dark:text-white bg-white dark:bg-gray-800"
+                placeholder="Type your message..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+              />
+              <button
+                className="bg-[#818cf8] text-white rounded-full w-8 h-8 flex items-center justify-center ml-2 hover:bg-[#818cf8]/90 transition-colors"
+                onClick={handleSendMessage}
+                style={{padding: 0}}
+              >
+                <HiArrowUp className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -36,12 +189,12 @@ export default function ChatBot() {
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="w-12 h-12 bg-[#818cf8] rounded-full flex items-center justify-center shadow-lg hover:bg-[#818cf8]/90 transition-colors text-xl"
+          className="w-12 h-12 bg-[#818cf8] rounded-full flex items-center justify-center shadow-lg hover:bg-[#818cf8]/90 transition-colors text-xl text-white"
           aria-label="Open AI chat"
         >
-          ✨
+          <HiSparkles className="w-6 h-6" />
         </button>
       )}
     </div>
-  )
+  );
 }

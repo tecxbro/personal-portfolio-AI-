@@ -6,16 +6,27 @@ export default function Adventures() {
       title: 'Mountain Hiking',
       date: 'October 2023',
       location: 'Mount Rainier',
-      image: '/adventures/hiking.jpg'
+      image: '/adventures/hiking.jpg', // Example image
     },
     {
       title: 'Beach Day',
       date: 'August 2023',
       location: 'Pacific Coast',
-      image: '/adventures/beach.jpg'
+      image: '/adventures/beach.jpg', // Example image
     },
-    // Add more adventures here
-  ]
+    {
+      title: 'Exploring the City',
+      date: 'December 2023',
+      location: 'New York',
+      image: '/adventures/city.jpg', // New image path
+    },
+    {
+      title: 'Camping Trip',
+      date: 'June 2024',
+      location: 'Yosemite National Park',
+      image: '/adventures/camping.jpg', // New image path
+    },
+  ];
 
   return (
     <div className="min-h-screen pt-32 px-6">
@@ -55,5 +66,5 @@ export default function Adventures() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -8,7 +8,7 @@ import {
   HiBriefcase,
   HiPhotograph,
   HiCode,
-  HiMail
+  HiMail,
 } from 'react-icons/hi'
 import { useTheme } from '../context/ThemeContext'
 
@@ -23,14 +23,14 @@ export default function Navigation() {
     { path: '/work', icon: HiBriefcase, label: 'Work' },
     { path: '/adventures', icon: HiPhotograph, label: 'Adventures' },
     { path: '/api', icon: HiCode, label: 'API' },
-    { path: '/contact', icon: HiMail, label: 'Contact' }
+    { path: '/contact', icon: HiMail, label: 'Contact' },
   ]
 
   const desktopLinks = [
-    { path: '/work', label: 'Work/' },
+    { path: '/work', label: 'Work' },
     { path: '/adventures', label: 'Adventures' },
     { path: '/api', label: 'API' },
-    { path: '/contact', label: 'Contact' }
+    { path: '/contact', label: 'Contact' },
   ]
 
   const Logo = () => (
