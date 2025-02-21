@@ -1,0 +1,30 @@
+@import "bootstrap/scss/bootstrap";
+
+// Custom theme colors
+$theme-colors: (
+  "primary": #0d6efd,
+  "secondary": #6c757d,
+  "success": #198754,
+  "info": #0dcaf0,
+  "warning": #ffc107,
+  "danger": #dc3545,
+  "light": #f8f9fa,
+  "dark": #212529
+);
+
+// Custom styles
+body {
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// Responsive adjustments
+@include media-breakpoint-down(md) {
+  .container {
+    padding: 0 1rem;
+  }
+}
